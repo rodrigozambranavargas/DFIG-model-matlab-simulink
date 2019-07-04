@@ -22,8 +22,7 @@ Lm = 2.5e-3;                % Magnetizing inductace (H)
 Rr = 2.9e-3;                % Rotor resistance referred to stator
 Ls = Lm + Lsi;              % Stator inductance (H)
 Lr = Lm + Lsi;              % Rotor inductance (H)
-%Vbus = Vr_stator*sqrt(2);   % DC of bus voltage referred to stator (V)
-Vbus = 1150;   % DC of bus voltage referred to stator (V)
+Vbus = Vr_stator*sqrt(2);   % DC of bus voltage referred to stator (V)
 sigma = 1- Lm^2/(Ls*Lr);    
 Fs = Vs*sqrt(2/3)/(2*pi*f); % Stator Flux
 
@@ -31,7 +30,7 @@ J = 127;                    % Inertia
 D = 1e-3;                   % Damping
 
 fsw = 4e3;                  % Switching frequency (Hz)
-Ts = 1/fsw/50;              % Sample time (sec) CHECK FREQUENCY 50
+Ts = 1/fsw/50;               % Sample time (sec) CHECK FREQUENCY 50
 
 % PI regulators
 tau_i = (sigma*Lr)/Rr;
@@ -45,37 +44,3 @@ ki_id = (wni^2)*Lr*sigma;
 ki_iq = ki_id;
 kp_n = (2*wnn*J)/p;
 ki_n = ((wnn^2)*J)/p;
-
-%--- space for the wind turbine model loop ----
-% Three blade wind turbine model
-N = 100;                     % Gearbox ratio 
-Radio = 42;                  % Radio
-ro = 1.225;                  % Air density
-
-
-
-
-
-%----------------------------------------------
-
-%--- space for GRID SIDE CONVERTER ----
-
-Cbus = 80e-3;               % DC bus capacitance
-Rg = 20e-6;                 % Grid side filter´s resistance
-Lg = 400e-6;                % Grid side filter´s inductance
-
-Kpg = 1/(1.5*Vs*sqrt(2/3));
-Kqg = -Kpg;
-
-%PI regulators
-
-tau_ig = Lg/Rg;
-wnig = 60*2*pi;
-
-kp_idg = (2*wnig*Lg)-Rg;
-kp_iqg = kp_idg;
-ki_idg = (wnig^2)*Lg;
-ki_iqg = ki_idg;
-
-kp_v = -1000;
-ki_v = -300000;
