@@ -13,17 +13,20 @@ Tem = 12732;                % Rated torque (N.m)
 
 p = 2;                      % Pole pair     
 u = 1/3;                    % Stator/rotor turns ratio
+
 Vr = 2070;                  % Rated rotor voltage (non-reached) (V)
 smax = 1/3;                 % Maximun slip
-Vr_stator = (Vr*smax)*u;    % Rated rotor voltage referred to stator  
+Vr_stator = (Vr*smax)*u;    % Rated rotor voltage referred to stator 
+
 Rs = 2.6e-3;                % Stator resistance (ohm)
 Lsi = 0.087e-3;             % Leakage inductance (stator & rotor) (H) Inductacia de fuga
 Lm = 2.5e-3;                % Magnetizing inductace (H)
 Rr = 2.9e-3;                % Rotor resistance referred to stator
 Ls = Lm + Lsi;              % Stator inductance (H)
 Lr = Lm + Lsi;              % Rotor inductance (H)
-%Vbus = Vr_stator*sqrt(2);   % DC of bus voltage referred to stator (V)
-Vbus = 1150;   % DC of bus voltage referred to stator (V)
+
+%Vbus = Vr_stator*sqrt(2);  % DC of bus voltage referred to stator (V)
+Vbus = 1150;                % DC of bus voltage referred to stator 1150(V)
 sigma = 1- Lm^2/(Ls*Lr);    
 Fs = Vs*sqrt(2/3)/(2*pi*f); % Stator Flux
 
@@ -31,7 +34,7 @@ J = 127;                    % Inertia
 D = 1e-3;                   % Damping
 
 fsw = 4e3;                  % Switching frequency (Hz)
-Ts = 1/fsw/f;              % Sample time (sec) CHECK FREQUENCY 50
+Ts = 1/fsw/f;               % Sample time (sec) CHECK FREQUENCY 50
 
 % PI regulators
 tau_i = (sigma*Lr)/Rr;
@@ -41,8 +44,10 @@ wnn = 1/tau_n;
 
 kp_id = (2*wni*sigma*Lr)-Rr;
 kp_iq = kp_id;
+
 ki_id = (wni^2)*Lr*sigma;
 ki_iq = ki_id;
+
 kp_n = (2*wnn*J)/p;
 ki_n = ((wnn^2)*J)/p;
 
@@ -51,9 +56,6 @@ ki_n = ((wnn^2)*J)/p;
 N = 100;                     % Gearbox ratio 
 Radio = 42;                  % Radio
 ro = 1.225;                  % Air density
-
-
-
 
 
 %----------------------------------------------
@@ -68,7 +70,6 @@ Kpg = 1/(1.5*Vs*sqrt(2/3));
 Kqg = -Kpg;
 
 %PI regulators
-
 tau_ig = Lg/Rg;
 wnig = 60*2*pi;
 
@@ -77,5 +78,5 @@ kp_iqg = kp_idg;
 ki_idg = (wnig^2)*Lg;
 ki_iqg = ki_idg;
 
-kp_v = -1000;
+kp_v = -1000;   %-1000
 ki_v = -300000;
