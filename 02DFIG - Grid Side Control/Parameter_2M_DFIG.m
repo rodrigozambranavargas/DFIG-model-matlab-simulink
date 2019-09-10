@@ -29,7 +29,7 @@ Lr = Lm + Lsr;              % Rotor inductance (mH)
 Q = 0;                      % For Reactive power = 0
 smax = 0.33;                % Maximun slip 0.25
 Fs = 1.28;                  % Stator Flux
-Vbus = 1000;                 % Bus Voltage
+Vbus = 1000;                % Bus Voltage
 %Mechanic 
 J = 127;                    % Inertia Kg*m^2
 D = 1e-3;                   % Damping friction factor N.m.s
@@ -51,8 +51,8 @@ ki_n = ((wnn^2)*J)/p;
 %--------------------------------------------------------------------------
 %Space for Grid Side Converter
 Cbus = 80e-3;               % DC bus capacitance
-Rg = 20e-6;                 % Grid side filter´s resistance 1
-Lg = 483e-6;                % Grid side filter´s inductance 1e-3
+Rg = 20e-6;                 % Grid side filter? resistance 1
+Lg = 483e-6;                % Grid side filter? inductance 1e-3
 
 Kpg = 1/(1.5*Vs*sqrt(2/3)); 
 Kqg = -Kpg;
@@ -73,4 +73,77 @@ ki_v = -300000;
 %PWM 
 fsw = 4e3;                  % Switching frequency (Hz)
 Ts = 1/fsw/f;               % Sample time (sec)
+
+%--------------------------------------------------------------------------
+%Space for Three blade wind turbine model
+
+N = 100;                    %Gearbox Ratio
+Radio = 55;                 %Radio
+ro = 1.225;                 %Air desity kg/m3 
+
+% Cp and Ct curves
+beta = 0;                   %Pitch angle
+V = [0.0000,0.5556,1.1111,1.6667,2.2222,2.7778,3.3333,3.8889,4.4444,...
+    5.0000,5.5556,6.1111,6.6667,7.2222,7.7778,8.3333,8.8889,9.4444, ...
+    10.0000,10.5556,11.1111,11.6667,12.2222,12.7778,13.3333,13.8889,...
+    14.4444,15.0000];       %wind
+
+f1 = figure;
+f2 = figure;
+
+
+for beta = -2:1:2
+cont = 1;
+for lambda = 0.2:0.42143:11.8   % 28 Cps and Cts
+    lambdai(cont)=(1./((1./(lambda-0.02*beta)+(0.003./(beta^3+1)))));
+    Cp(cont)=0.73.*(151./lambdai(cont)-0.58.*beta-0.002*beta^2.14-13.2).*(exp(-18.4./lambdai(cont)));
+    Ct(cont) = Cp (cont)/lambda;
+    
+    Pt (cont)= (1/2*ro*pi*(Radio)^2)*(V(cont))^3*Cp(cont);
+    
+    cont=cont+1; 
+end
+
+%  plot (V,Pt);
+%  hold on;
+   
+tab_lambda=[0.2:0.42143:11.8];
+plot (tab_lambda,Cp);
+hold on;
+plot (tab_lambda,Ct);
+hold on;
+
+end
+
+ 
+
+
+% % Kopt for MPPT
+% Cp_max = 0.44;
+% lambda_opt = 7.2;
+% Kopt = ((0.5*ro*pi*(Radio^5)*Cp_max)/(lambda_opt^3));
+% 
+% % Power cure in fuction of wind speed
+% 
+% P = 1.0e+06 *[0,0,0,0,0,0,0,0.0472,0.1097,0.1815,0.2568,0.3418, ...
+%     0.4437,0.5642,0.7046,0.8667,1.0518,1.2616,1.4976,1.7613,2.0534,...
+%     2.3513,2.4024,2.4024,2.4024,2.4024,2.4024,2.4024];
+% 
+% V = [0.0000,0.5556,1.1111,1.6667,2.2222,2.7778,3.3333,3.8889,4.4444,...
+%     5.0000,5.5556,6.1111,6.6667,7.2222,7.7778,8.3333,8.8889,9.4444, ...
+%     10.0000,10.5556,11.1111,11.6667,12.2222,12.7778,13.3333,13.8889,...
+%     14.4444,15.0000];
+% 
+% % 
+% figure
+% subplot (1,2,1)
+% plot (tab_lambda,Ct,'linewidth',1.5)
+% xlabel('lambda','fontsize',14)
+% ylabel('Ct','fontsize',14)
+% 
+% subplot(1,2,2)
+% plot (V,P,'linewidth',1.5)
+% grid
+% xlabel('Wind speed (m/s)','fontsize',14)
+% ylabel('Power (MW)','fontsize',14)
 
