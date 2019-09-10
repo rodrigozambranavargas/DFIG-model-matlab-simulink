@@ -78,7 +78,7 @@ Ts = 1/fsw/f;               % Sample time (sec)
 %Space for Three blade wind turbine model
 
 N = 100;                    %Gearbox Ratio
-Radio = 55;                 %Radio
+Radio = 45;                 %Radio
 ro = 1.225;                 %Air desity kg/m3 
 
 % Cp and Ct curves
@@ -87,10 +87,6 @@ V = [0.0000,0.5556,1.1111,1.6667,2.2222,2.7778,3.3333,3.8889,4.4444,...
     5.0000,5.5556,6.1111,6.6667,7.2222,7.7778,8.3333,8.8889,9.4444, ...
     10.0000,10.5556,11.1111,11.6667,12.2222,12.7778,13.3333,13.8889,...
     14.4444,15.0000];       %wind
-
-f1 = figure;
-f2 = figure;
-
 
 for beta = -2:1:2
 cont = 1;
@@ -107,11 +103,11 @@ end
 %  plot (V,Pt);
 %  hold on;
    
-tab_lambda=[0.2:0.42143:11.8];
-plot (tab_lambda,Cp);
-hold on;
-plot (tab_lambda,Ct);
-hold on;
+% tab_lambda=[0.2:0.42143:11.8];
+% plot (tab_lambda,Cp);
+% hold on;
+% plot (tab_lambda,Ct);
+% hold on;
 
 end
 
