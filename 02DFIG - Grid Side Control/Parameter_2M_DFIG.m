@@ -78,7 +78,7 @@ Ts = 1/fsw/f;               % Sample time (sec)
 %Space for Three blade wind turbine model
 
 N = 100;                    %Gearbox Ratio
-Radio = 45;                 %Radio
+Radio = 44;                 %Radio
 ro = 1.225;                 %Air desity kg/m3 
 
 % Cp and Ct curves
@@ -88,7 +88,7 @@ V = [0.0000,0.5556,1.1111,1.6667,2.2222,2.7778,3.3333,3.8889,4.4444,...
     10.0000,10.5556,11.1111,11.6667,12.2222,12.7778,13.3333,13.8889,...
     14.4444,15.0000];       %wind
 
-for beta = -2:1:2
+for beta = 0:1:0  % max power to Beta = -1,6 and wind speed 12,7778
 cont = 1;
 for lambda = 0.2:0.42143:11.8   % 28 Cps and Cts
     lambdai(cont)=(1./((1./(lambda-0.02*beta)+(0.003./(beta^3+1)))));
@@ -96,29 +96,34 @@ for lambda = 0.2:0.42143:11.8   % 28 Cps and Cts
     Ct(cont) = Cp (cont)/lambda;
     
     Pt (cont)= (1/2*ro*pi*(Radio)^2)*(V(cont))^3*Cp(cont);
+    lambda
     
-    cont=cont+1; 
+    cont=cont+1 
 end
 
 %  plot (V,Pt);
 %  hold on;
    
-% tab_lambda=[0.2:0.42143:11.8];
-% plot (tab_lambda,Cp);
-% hold on;
+tab_lambda=[0.2:0.42143:11.8];
+plot (tab_lambda,Cp);
+hold on;
 % plot (tab_lambda,Ct);
 % hold on;
 
 end
 
- 
+% Kopt for MPPT
+Cp_max = 0.44;
+lambda_opt = 7.36;
+Kopt = ((0.5*ro*pi*(Radio^5)*Cp_max)/(lambda_opt^3));
 
 
-% % Kopt for MPPT
-% Cp_max = 0.44;
-% lambda_opt = 7.2;
-% Kopt = ((0.5*ro*pi*(Radio^5)*Cp_max)/(lambda_opt^3));
-% 
+
+
+
+
+
+
 % % Power cure in fuction of wind speed
 % 
 % P = 1.0e+06 *[0,0,0,0,0,0,0,0.0472,0.1097,0.1815,0.2568,0.3418, ...
