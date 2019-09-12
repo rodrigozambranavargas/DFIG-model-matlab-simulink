@@ -29,7 +29,7 @@ Lr = Lm + Lsr;              % Rotor inductance (mH)
 Q = 0;                      % For Reactive power = 0
 smax = 0.33;                % Maximun slip 0.25
 Fs = 1.28;                  % Stator Flux
-Vbus = 1000;                % Bus Voltage
+Vbus_ref = 1000;            % Bus Voltage
 %Mechanic 
 J = 127;                    % Inertia Kg*m^2
 D = 1e-3;                   % Damping friction factor N.m.s
@@ -94,19 +94,17 @@ for lambda = 0.2:0.42143:11.8   % 28 Cps and Cts
     lambdai(cont)=(1./((1./(lambda-0.02*beta)+(0.003./(beta^3+1)))));
     Cp(cont)=0.73.*(151./lambdai(cont)-0.58.*beta-0.002*beta^2.14-13.2).*(exp(-18.4./lambdai(cont)));
     Ct(cont) = Cp (cont)/lambda;
-    
     Pt (cont)= (1/2*ro*pi*(Radio)^2)*(V(cont))^3*Cp(cont);
-    lambda
-    
-    cont=cont+1 
+    cont=cont+1; 
 end
 
-%  plot (V,Pt);
-%  hold on;
+% plot (V,Pt);
+% hold on;
    
-tab_lambda=[0.2:0.42143:11.8];
-plot (tab_lambda,Cp);
-hold on;
+% tab_lambda=[0.2:0.42143:11.8];
+% plot (tab_lambda,Cp);
+% hold on;
+
 % plot (tab_lambda,Ct);
 % hold on;
 
@@ -116,11 +114,6 @@ end
 Cp_max = 0.44;
 lambda_opt = 7.36;
 Kopt = ((0.5*ro*pi*(Radio^5)*Cp_max)/(lambda_opt^3));
-
-
-
-
-
 
 
 
