@@ -76,15 +76,10 @@ Ts = 1/fsw/f;               % Sample time (sec)
 
 %--------------------------------------------------------------------------
 %Space for Three blade wind turbine model
-
 N = 100;                    %Gearbox Ratio
 Radio = 44;                 %Radio
 ro = 1.225;                 %Air desity kg/m3 
-beta = -0.5;                   %Pitch angle
-V = [0.0000,0.5556,1.1111,1.6667,2.2222,2.7778,3.3333,3.8889,4.4444,...
-    5.0000,5.5556,6.1111,6.6667,7.2222,7.7778,8.3333,8.8889,9.4444, ...
-    10.0000,10.5556,11.1111,11.6667,12.2222,12.7778,13.3333,13.8889,...
-    14.4444,15.0000];       %wind
+beta = -0.1;                   %Pitch angle
 cont = 1;
 
 for lambda = 0.1:0.1:12
@@ -96,14 +91,40 @@ end
 lambda=[0.1:0.1:12];
 plot (lambda,Cp);
 hold on;
-
-cp_opt = max(Cp)
+cp_opt = max(Cp);
 posicion=find(Cp==cp_opt);
-lambda_opt = lambda(posicion)
+lambda_opt = lambda(posicion);
 
 
+cont2=1;
+for Vv = 0.1:0.1:15
+Pt (cont2)= (0.5*ro*pi*(Radio)^2)*(Vv)^3*cp_opt;
+cont2=cont2+1;
+end 
+Vv=[0.1:0.1:15];
+figure
+plot (Vv,Pt);
+hold on;
 
+cont3=1;
+for omega_m_rpm = 0.1:0.1:2000
+Pt_rpm (cont3)= (0.5*ro*pi*(Radio)^2)*((Radio*((omega_m_rpm/N)*(2*pi/60)))/lambda_opt)^3*cp_opt;
+cont3=cont3+1;
+end 
+omega_m_rpm=[0.1:0.1:2000];
+figure;
+plot (omega_m_rpm,Pt_rpm);
+hold on;
 
+cont4=1;
+for omega_m_rd = 0.1:0.1:200
+Pt_rd (cont4)= (0.5*ro*pi*(Radio)^2)*((Radio*((omega_m_rd/N)))/lambda_opt)^3*cp_opt;
+cont4=cont4+1;
+end 
+omega_m_rd=[0.1:0.1:200];
+figure;
+plot (omega_m_rd,Pt_rd);
+hold on;
 
 
 
