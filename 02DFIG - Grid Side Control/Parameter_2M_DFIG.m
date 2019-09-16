@@ -66,7 +66,7 @@ kp_iqg = kp_idg;
 ki_idg = (wnig^2)*Lg;
 ki_iqg = ki_idg;
 
-kp_v = -1000;   %-1000
+kp_v = -1000;   
 ki_v = -300000;
 
 %--------------------------------------------------------------------------
@@ -80,64 +80,76 @@ Ts = 1/fsw/f;               % Sample time (sec)
 N = 100;                    %Gearbox Ratio
 Radio = 44;                 %Radio
 ro = 1.225;                 %Air desity kg/m3 
-
-% Cp and Ct curves
-beta = 0;                   %Pitch angle
+beta = -0.5;                   %Pitch angle
 V = [0.0000,0.5556,1.1111,1.6667,2.2222,2.7778,3.3333,3.8889,4.4444,...
     5.0000,5.5556,6.1111,6.6667,7.2222,7.7778,8.3333,8.8889,9.4444, ...
     10.0000,10.5556,11.1111,11.6667,12.2222,12.7778,13.3333,13.8889,...
     14.4444,15.0000];       %wind
-
-for beta = 0:1:0  % max power to Beta = -1,6 and wind speed 12,7778
 cont = 1;
-for lambda = 0.2:0.42143:11.8   % 28 Cps and Cts
-    lambdai(cont)=(1./((1./(lambda-0.02*beta)+(0.003./(beta^3+1)))));
-    Cp(cont)=0.73.*(151./lambdai(cont)-0.58.*beta-0.002*beta^2.14-13.2).*(exp(-18.4./lambdai(cont)));
-    Ct(cont) = Cp (cont)/lambda;
-    Pt (cont)= (1/2*ro*pi*(Radio)^2)*(V(cont))^3*Cp(cont);
-    cont=cont+1; 
-end
 
-% plot (V,Pt);
-% hold on;
-   
-% tab_lambda=[0.2:0.42143:11.8];
-% plot (tab_lambda,Cp);
-% hold on;
+for lambda = 0.1:0.1:12
+lambdai(cont)=(1/((1/(lambda-0.02*beta)+(0.003/(beta^3+1)))));
+Cp(cont)=0.73*(151/lambdai(cont)-0.58*beta-0.002*beta^2.14-13.2).*(exp(-18.4/lambdai(cont)));
+Ct(cont) = Cp (cont)/lambda;
+cont = cont+1;
+end 
+lambda=[0.1:0.1:12];
+plot (lambda,Cp);
+hold on;
 
-% plot (tab_lambda,Ct);
-% hold on;
-
-end
-
-% Kopt for MPPT
-Cp_max = 0.44;
-lambda_opt = 7.36;
-Kopt = ((0.5*ro*pi*(Radio^5)*Cp_max)/(lambda_opt^3));
+cp_opt = max(Cp)
+posicion=find(Cp==cp_opt);
+lambda_opt = lambda(posicion)
 
 
 
-% % Power cure in fuction of wind speed
+
+
+
+
+
+
+
+
+
+
+
+
+
 % 
-% P = 1.0e+06 *[0,0,0,0,0,0,0,0.0472,0.1097,0.1815,0.2568,0.3418, ...
-%     0.4437,0.5642,0.7046,0.8667,1.0518,1.2616,1.4976,1.7613,2.0534,...
-%     2.3513,2.4024,2.4024,2.4024,2.4024,2.4024,2.4024];
+% N = 100;                    %Gearbox Ratio
+% Radio = 44;                 %Radio
+% ro = 1.225;                 %Air desity kg/m3 
 % 
+% % Cp and Ct curves
+% beta = -0.6;                   %Pitch angle
 % V = [0.0000,0.5556,1.1111,1.6667,2.2222,2.7778,3.3333,3.8889,4.4444,...
 %     5.0000,5.5556,6.1111,6.6667,7.2222,7.7778,8.3333,8.8889,9.4444, ...
 %     10.0000,10.5556,11.1111,11.6667,12.2222,12.7778,13.3333,13.8889,...
-%     14.4444,15.0000];
+%     14.4444,15.0000];       %wind
 % 
-% % 
+% % for beta = 0:1:0  % max power to Beta = -1,6 and wind speed 12,7778
+% cont = 1;
+% 
+% for lambda = 0:0.42143:11.8   % 28 Cps and Cts
+%     lambdai(cont)=(1/((1/(lambda-0.02*beta)+(0.003/(beta^3+1)))));
+%     Cp(cont)=0.73*(151/lambdai(cont)-0.58*beta-0.002*beta^2.14-13.2).*(exp(-18.4/lambdai(cont)));
+%     Ct(cont) = Cp (cont)/lambda;
+%     Pt (cont)= (0.5*ro*pi*(Radio)^2)*(V(cont))^3*Cp(cont);
+%     cont=cont+1; 
+% end
+% tab_lambda=[0.2:0.42143:11.8];
+% plot (tab_lambda,Cp);
+% hold on;
+% 
+% % plot (tab_lambda,Ct);
+% % hold on;
 % figure
-% subplot (1,2,1)
-% plot (tab_lambda,Ct,'linewidth',1.5)
-% xlabel('lambda','fontsize',14)
-% ylabel('Ct','fontsize',14)
+% plot (V,Pt);
+% hold on;
+% % end
 % 
-% subplot(1,2,2)
-% plot (V,P,'linewidth',1.5)
-% grid
-% xlabel('Wind speed (m/s)','fontsize',14)
-% ylabel('Power (MW)','fontsize',14)
-
+% % Kopt for MPPT
+% Cp_max = 0.4593;
+% lambda_opt = 7.364;
+% Kopt = ((0.5*ro*pi*(Radio^5)*Cp_max)/(lambda_opt)^3);
