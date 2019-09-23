@@ -28,7 +28,7 @@ Lr = Lm + Lsr;              % Rotor inductance (mH)
 %Space for Rotor Side Converter
 Q = 0;                      % For Reactive power = 0
 smax = 0.33;                % Maximun slip 0.25
-Fs = 1.28;                  % Stator Flux
+Fs = 1.8;                   % Stator Flux
 Vbus_ref = 1000;            % Bus Voltage
 %Mechanic 
 J = 127;                    % Inertia Kg*m^2
@@ -79,22 +79,27 @@ Ts = 1/fsw/f;               % Sample time (sec)
 N = 100;                    %Gearbox Ratio
 Radio = 44;                 %Radio
 ro = 1.225;                 %Air desity kg/m3 
-beta = -0.1;                   %Pitch angle
-cont = 1;
+%beta = -0.1;                %Pitch angle
+beta=[-2.5 -1.5 -0.01 1.5 2.5 -0.01];
 
+for k=1:6
+cont = 1;
 for lambda = 0.1:0.1:12
-lambdai(cont)=(1/((1/(lambda-0.02*beta)+(0.003/(beta^3+1)))));
-Cp(cont)=0.73*(151/lambdai(cont)-0.58*beta-0.002*beta^2.14-13.2).*(exp(-18.4/lambdai(cont)));
+lambdai(cont)=(1/((1/(lambda-0.02*beta(k))+(0.003/(beta(k)^3+1)))));
+Cp(cont)=0.73*(151/lambdai(cont)-0.58*beta(k)-0.002*beta(k)^2.14-13.2).*(exp(-18.4/lambdai(cont)));
 Ct(cont) = Cp (cont)/lambda;
 cont = cont+1;
 end 
 lambda=[0.1:0.1:12];
-plot (lambda,Cp);
-hold on;
-cp_opt = max(Cp);
+figure (1)
+plot(lambda,Cp), grid on, hold on,
+end
+% Lambda and CP optimum
+cp_opt = max(Cp)
+cp_opt_abs = abs(max(Cp))
 posicion=find(Cp==cp_opt);
-lambda_opt = lambda(posicion);
-
+lambda_opt = abs(lambda(posicion))
+beta = beta (k)
 
 cont2=1;
 for Vv = 0.1:0.1:15
@@ -102,9 +107,8 @@ Pt (cont2)= (0.5*ro*pi*(Radio)^2)*(Vv)^3*cp_opt;
 cont2=cont2+1;
 end 
 Vv=[0.1:0.1:15];
-figure
-plot (Vv,Pt);
-hold on;
+figure (2)
+plot(Vv,Pt), grid on, hold on,
 
 cont3=1;
 for omega_m_rpm = 0.1:0.1:2000
@@ -112,9 +116,9 @@ Pt_rpm (cont3)= (0.5*ro*pi*(Radio)^2)*((Radio*((omega_m_rpm/N)*(2*pi/60)))/lambd
 cont3=cont3+1;
 end 
 omega_m_rpm=[0.1:0.1:2000];
-figure;
-plot (omega_m_rpm,Pt_rpm);
-hold on;
+figure (3)
+plot (omega_m_rpm,Pt_rpm), grid on, hold on,
+
 
 cont4=1;
 for omega_m_rd = 0.1:0.1:200
@@ -122,55 +126,10 @@ Pt_rd (cont4)= (0.5*ro*pi*(Radio)^2)*((Radio*((omega_m_rd/N)))/lambda_opt)^3*cp_
 cont4=cont4+1;
 end 
 omega_m_rd=[0.1:0.1:200];
-figure;
-plot (omega_m_rd,Pt_rd);
-hold on;
+figure (4)
+plot (omega_m_rd,Pt_rd), grid on, hold on,
 
 
 
 
 
-
-
-
-
-
-
-
-% 
-% N = 100;                    %Gearbox Ratio
-% Radio = 44;                 %Radio
-% ro = 1.225;                 %Air desity kg/m3 
-% 
-% % Cp and Ct curves
-% beta = -0.6;                   %Pitch angle
-% V = [0.0000,0.5556,1.1111,1.6667,2.2222,2.7778,3.3333,3.8889,4.4444,...
-%     5.0000,5.5556,6.1111,6.6667,7.2222,7.7778,8.3333,8.8889,9.4444, ...
-%     10.0000,10.5556,11.1111,11.6667,12.2222,12.7778,13.3333,13.8889,...
-%     14.4444,15.0000];       %wind
-% 
-% % for beta = 0:1:0  % max power to Beta = -1,6 and wind speed 12,7778
-% cont = 1;
-% 
-% for lambda = 0:0.42143:11.8   % 28 Cps and Cts
-%     lambdai(cont)=(1/((1/(lambda-0.02*beta)+(0.003/(beta^3+1)))));
-%     Cp(cont)=0.73*(151/lambdai(cont)-0.58*beta-0.002*beta^2.14-13.2).*(exp(-18.4/lambdai(cont)));
-%     Ct(cont) = Cp (cont)/lambda;
-%     Pt (cont)= (0.5*ro*pi*(Radio)^2)*(V(cont))^3*Cp(cont);
-%     cont=cont+1; 
-% end
-% tab_lambda=[0.2:0.42143:11.8];
-% plot (tab_lambda,Cp);
-% hold on;
-% 
-% % plot (tab_lambda,Ct);
-% % hold on;
-% figure
-% plot (V,Pt);
-% hold on;
-% % end
-% 
-% % Kopt for MPPT
-% Cp_max = 0.4593;
-% lambda_opt = 7.364;
-% Kopt = ((0.5*ro*pi*(Radio^5)*Cp_max)/(lambda_opt)^3);
