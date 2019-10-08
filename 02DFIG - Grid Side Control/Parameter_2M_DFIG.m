@@ -1,6 +1,7 @@
 close all
 clear all
-clc                          
+clc                 
+%--------------------------------------------------------------------------
 %PARAMETERS OF A 2MW DFIG
 %IEEE - DFIM: Chapter 3 
 %--------------------------------------------------------------------------
@@ -28,11 +29,11 @@ Lr = Lm + Lsr;              % Rotor inductance (mH)
 %Space for Rotor Side Converter
 Q = 0;                      % For Reactive power = 0
 smax = 0.33;                % Maximun slip 0.25
-Fs = 1.8;                   % Stator Flux
+Fs = 1.8%1.8;                   % Stator Flux
 Vbus_ref = 1000;            % Bus Voltage
 %Mechanic 
-J = 127;                    % Inertia Kg*m^2
-D = 1e-3;                   % Damping friction factor N.m.s
+J = 90%130;                    % Inertia Kg*m^2
+D = 0.1%1e-3;                   % Damping friction factor N.m.s
 %PI regulators
 sigma = 1- Lm^2/(Ls*Lr); 
 tau_i = (sigma*Lr)/Rr;
@@ -76,54 +77,34 @@ Ts = 1/fsw/f;               % Sample time (sec)
 
 %--------------------------------------------------------------------------
 %Space for Three blade wind turbine model
-
 % Beta -> Lambda Vs Cp Graph
 N = 100;                    %Gearbox Ratio
 Radio = 44;                 %Radio
 ro = 1.225;                 %Air desity kg/m3           
 %beta=[-2.5 -1.5 0 1.5 2.5 0];
 beta=[0 0 0 0 0 0 0];
-
 for k=1:7
-    
-cont = 1;
-for lambda = 0.1:0.1:14
-lambdai(cont)=(1/((1/(lambda-0.02*beta(k))+(0.003/(beta(k)^3+1)))));
-Cp(cont)=0.73*(151/lambdai(cont)-0.58*beta(k)-0.002*beta(k)^2.14-13.2).*(exp(-18.4/lambdai(cont)));
-Ct(cont) = Cp (cont)/lambda;
-cont = cont+1;
-end 
-lambda=[0.1:0.1:14];
-figure (1)
-plot(lambda,Cp), grid on, hold on,
-
-
-
-%Rotor Speed Vs Power Graph
-for Vv = 6:1:12   %Wind Velocity at 12 m/s
-cont2=1;
-for serie = 0.1:0.1:14
-Pt (cont2)= (0.5*ro*pi*(Radio)^2)*(Vv)^3*Cp(cont2);
-omega_m (cont2) = ((lambda(cont2)*Vv) /Radio)*N/(2*pi/60)
-cont2=cont2+1;
-end 
-figure (2)
-plot(omega_m,Pt), grid on, hold on,
-end
-
-
-% %Wind Speed Vs Power Graph
-% for Vv = 6:1:12   %Wind Velocity at 12 m/s
-% cont2=1;
-% for serie = 0.1:0.1:14
-% Pt (cont2)= (0.5*ro*pi*(Radio)^2)*(Vv)^3*Cp(cont2);
-% omega_m (cont2) = ((lambda(cont2)*Vv) /Radio)*N/(2*pi/60)
-% cont2=cont2+1;
-% end 
-% figure (3)
-% plot(omega_m,Pt), grid on, hold on,
-% end
-
+    cont = 1;
+    for lambda = 0.1:0.1:14
+        lambdai(cont)=(1/((1/(lambda-0.02*beta(k))+(0.003/(beta(k)^3+1)))));
+        Cp(cont)=0.73*(151/lambdai(cont)-0.58*beta(k)-0.002*beta(k)^2.14-13.2).*(exp(-18.4/lambdai(cont)));
+        Ct(cont) = Cp (cont)/lambda;
+        cont = cont+1;
+    end
+    lambda=[0.1:0.1:14];
+    figure (1)
+    plot(lambda,Cp), grid on, hold on,
+    %Rotor Speed Vs Power Graph
+    for Vv = 6:0.5:12   %Wind Velocity at 12 m/s
+        cont2=1;
+        for serie = 0.1:0.1:14
+            Pt (cont2)= (0.5*ro*pi*(Radio)^2)*(Vv)^3*Cp(cont2);
+            omega_m (cont2) = ((lambda(cont2)*Vv) /Radio)*N/(2*pi/60)
+            cont2=cont2+1;
+        end
+        figure (2)
+        plot(omega_m,Pt), grid on, hold on,
+    end
 end
 
 % Lambda and CP optimum
@@ -133,37 +114,19 @@ posicion=find(Cp==cp_opt);
 lambda_opt = abs(lambda(posicion))
 beta = beta (k)     %Pitch angle
 
-%---------------------------------------------------------------------
+% Wind velocity Vs Wind Power
 cont2=1;
 for Vv = 0.1:0.1:15
-Pt (cont2)= (0.5*ro*pi*(Radio)^2)*(Vv)^3*cp_opt;
-cont2=cont2+1;
-end 
+    Pt (cont2)= (0.5*ro*pi*(Radio)^2)*(Vv)^3*cp_opt;
+    cont2=cont2+1;
+end
 Vv=[0.1:0.1:15];
 figure (3)
 plot(Vv,Pt), grid on, hold on,
-% 
-% 
-% cont3=1;
-% for omega_m_rpm = 0.1:0.1:2000
-% Pt_rpm (cont3)= (0.5*ro*pi*(Radio)^2)*((Radio*((omega_m_rpm/N)*(2*pi/60)))/lambda_opt)^3*cp_opt;
-% cont3=cont3+1;
-% end 
-% omega_m_rpm=[0.1:0.1:2000];
-% figure (4)
-% plot (omega_m_rpm,Pt_rpm), grid on, hold on,
+%---------------------------------------------------------------------
 
-
-% cont4=1;
-% for omega_m_rd = 0.1:0.1:200
-% Pt_rd (cont4)= (0.5*ro*pi*(Radio)^2)*((Radio*((omega_m_rd/N)))/lambda_opt)^3*cp_opt;
-% cont4=cont4+1;
-% end 
-% omega_m_rd=[0.1:0.1:200];
-% figure (5)
-% plot (omega_m_rd,Pt_rd), grid on, hold on,
-% 
-% 
-
+%--------------------------------------------------------------------------
+%PARAMETERS OF BESS
+%--------------------------------------------------------------------------
 
 
