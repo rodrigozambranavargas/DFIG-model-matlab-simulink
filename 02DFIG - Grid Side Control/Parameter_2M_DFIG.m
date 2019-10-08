@@ -134,14 +134,14 @@ lambda_opt = abs(lambda(posicion))
 beta = beta (k)     %Pitch angle
 
 %---------------------------------------------------------------------
-% cont2=1;
-% for Vv = 0.1:0.1:15
-% Pt (cont2)= (0.5*ro*pi*(Radio)^2)*(Vv)^3*cp_opt;
-% cont2=cont2+1;
-% end 
-% Vv=[0.1:0.1:15];
-% figure (3)
-% plot(Vv,Pt), grid on, hold on,
+cont2=1;
+for Vv = 0.1:0.1:15
+Pt (cont2)= (0.5*ro*pi*(Radio)^2)*(Vv)^3*cp_opt;
+cont2=cont2+1;
+end 
+Vv=[0.1:0.1:15];
+figure (3)
+plot(Vv,Pt), grid on, hold on,
 % 
 % 
 % cont3=1;
