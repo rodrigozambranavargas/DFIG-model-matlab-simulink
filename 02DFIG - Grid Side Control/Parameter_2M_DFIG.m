@@ -1,6 +1,6 @@
 close all
 clear all
-clc                 
+clc       
 %--------------------------------------------------------------------------
 %PARAMETERS OF A 2MW DFIG
 %IEEE - DFIM: Chapter 3 
