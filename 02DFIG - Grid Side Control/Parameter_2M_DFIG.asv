@@ -131,6 +131,6 @@ Vv=[0.1:0.1:15];
 %--------------------------------------------------------------------------
 %Space for Grid Side Converter
 Cbus_bess = 15e-3;%80e-3;               % DC bus capacitance
-Rg_bess = 20e-5;%20e-6;                 % Grid side filter? resistance 1
-Lg_bess = 600e-6;%483e-6;        % Grid side filter? inductance 1e-3
+Rg_bess = 20e;%20e-6;                 % Grid side filter? resistance 1
+Lg_bess = 483e-6;%483e-6;        % Grid side filter? inductance 1e-3
 
