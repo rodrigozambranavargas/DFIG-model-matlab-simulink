@@ -92,8 +92,9 @@ for k=1:7
         cont = cont+1;
     end
     lambda=[0.1:0.1:14];
-    figure (1)
-    plot(lambda,Cp), grid on, hold on,
+    %figure (1)
+    %plot(lambda,Cp), grid on, hold on,
+    
     %Rotor Speed Vs Power Graph
     for Vv = 6:0.5:12   %Wind Velocity at 12 m/s
         cont2=1;
@@ -102,8 +103,8 @@ for k=1:7
             omega_m (cont2) = ((lambda(cont2)*Vv) /Radio)*N/(2*pi/60)
             cont2=cont2+1;
         end
-        figure (2)
-        plot(omega_m,Pt), grid on, hold on,
+        %figure (2)
+        %plot(omega_m,Pt), grid on, hold on,
     end
 end
 
@@ -121,12 +122,15 @@ for Vv = 0.1:0.1:15
     cont2=cont2+1;
 end
 Vv=[0.1:0.1:15];
-figure (3)
-plot(Vv,Pt), grid on, hold on,
+%figure (3)
+%plot(Vv,Pt), grid on, hold on,
 %---------------------------------------------------------------------
 
 %--------------------------------------------------------------------------
 %PARAMETERS OF BESS
 %--------------------------------------------------------------------------
-
+%Space for Grid Side Converter
+Cbus_bess = 10e-3;               % DC bus capacitance
+Rg_bess = 20e-5;                 % Grid side filter? resistance 1
+Lg_bess = 600e-6;%483e-6;        % Grid side filter? inductance 1e-3
 
