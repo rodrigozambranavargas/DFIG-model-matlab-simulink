@@ -134,3 +134,5 @@ Cbus_bess = 15e-3;%80e-3;               % DC bus capacitance
 Rg_bess = 20e-5;%20e-6;                 % Grid side filter? resistance 1
 Lg_bess = 600e-6;%483e-6;        % Grid side filter? inductance 1e-3
 
+%kp_v = -1000;   
+%ki_v = -300000;
