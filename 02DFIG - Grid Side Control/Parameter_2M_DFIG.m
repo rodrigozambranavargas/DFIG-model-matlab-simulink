@@ -29,8 +29,8 @@ Lr = Lm + Lsr;              % Rotor inductance (mH)
 %Space for Rotor Side Converter
 Q = 0;                      % For Reactive power = 0
 smax = 0.33;                % Maximun slip 0.25
-Fs = 1.8%1.8;                   % Stator Flux
-Vbus_ref = 1000;            % Bus Voltage
+Fs = 1.8%1.8;               % Stator Flux
+Vbus_ref = 1200;            % Bus Voltage
 %Mechanic 
 J = 90%130;                    % Inertia Kg*m^2
 D = 0.1%1e-3;                   % Damping friction factor N.m.s
