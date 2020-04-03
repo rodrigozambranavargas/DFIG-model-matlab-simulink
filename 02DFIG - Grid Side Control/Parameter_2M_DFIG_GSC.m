@@ -5,7 +5,7 @@ clc
 %PARAMETERS OF A 2MW DFIG
 %IEEE - DFIM: Chapter 3 
 %--------------------------------------------------------------------------
-f = 50;                     % Stator frequency (Hz)
+f = 60;                     % Stator frequency (Hz)
 n = 1500;                   % Synchronous speed at 50 Hz|(rev/min)
 Ps = 2e6;                   % Nominal stator three-phase active power|(MW)
 Vs = 690;                   % Line-to-line nominal stator voltage in rms (V)
@@ -72,15 +72,15 @@ ki_v = -300000;
 
 %--------------------------------------------------------------------------
 %PWM 
-fsw = 4e3;                  % Switching frequency (Hz)
-Ts = 1/fsw/f;               % Sample time (sec)
+fsw = 4e3;                  %Switching frequency (Hz)
+Ts = 1/fsw/f;               %Sample time (sec)
 
 %--------------------------------------------------------------------------
 %Space for Three blade wind turbine model
 % Beta -> Lambda Vs Cp Graph
 N = 100;                    %Gearbox Ratio
 Radio = 44;                 %Radio
-ro = 1.225;                 %Air desity kg/m3           
+ro = 1.225;                 %Air desity kg/m3
 %beta=[-2.5 -1.5 0 1.5 2.5 0];
 beta=[0 0 0 0 0 0 0];
 for k=1:7
@@ -122,10 +122,10 @@ for Vv = 0.1:0.1:15
     cont2=cont2+1;
 end
 Vv=[0.1:0.1:15];
-%figure (3)
-%plot(Vv,Pt), grid on, hold on,
-%---------------------------------------------------------------------
-
+figure (3)
+plot(Vv,Pt), grid on, hold on,
+%--------------------------------------------------------------------------
+ 
 %--------------------------------------------------------------------------
 %PARAMETERS OF BESS
 %--------------------------------------------------------------------------
@@ -133,6 +133,6 @@ Vv=[0.1:0.1:15];
 Cbus_bess = 15e-3;%80e-3;               % DC bus capacitance
 Rg_bess = 20e-5;%20e-6;                 % Grid side filter? resistance 1
 Lg_bess = 600e-6;%483e-6;        % Grid side filter? inductance 1e-3
-
 %kp_v = -1000;   
 %ki_v = -300000;
+Vdc_bat_ref= 1300;
