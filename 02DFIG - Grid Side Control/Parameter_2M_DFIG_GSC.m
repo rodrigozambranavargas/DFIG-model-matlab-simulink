@@ -5,8 +5,8 @@ clc
 %PARAMETERS OF A 2MW DFIG
 %IEEE - DFIM: Chapter 3 
 %--------------------------------------------------------------------------
-f = 60;                     % Stator frequency (Hz)
-n = 1500;                   % Synchronous speed at 50 Hz|(rev/min)
+f = 60;%50                  % Stator frequency (Hz)
+n = 1800; %1500             % Synchronous speed at 50 Hz|(rev/min)
 Ps = 2e6;                   % Nominal stator three-phase active power|(MW)
 Vs = 690;                   % Line-to-line nominal stator voltage in rms (V)
 Is = 1760;                  % Each phase nominal stator current in rms (Amp)
@@ -29,7 +29,7 @@ Lr = Lm + Lsr;              % Rotor inductance (mH)
 %Space for Rotor Side Converter
 Q = 0;                      % For Reactive power = 0
 smax = 0.33;                % Maximun slip 0.25
-Fs = 1.8%1.8;               % Stator Flux
+Fs = 1.5 %1.8;              % Stator Flux
 Vbus_ref = 1200;            % Bus Voltage
 %Mechanic 
 J = 90%130;                    % Inertia Kg*m^2
@@ -130,8 +130,8 @@ plot(Vv,Pt), grid on, hold on,
 %PARAMETERS OF BESS
 %--------------------------------------------------------------------------
 %Space for Grid Side Converter
-Cbus_bess = 15e-3;%80e-3;               % DC bus capacitance
-Rg_bess = 20e-5;%20e-6;                 % Grid side filter? resistance 1
+Cbus_bess = 15e-3;%80e-3;        % DC bus capacitance
+Rg_bess = 20e-5;%20e-6;          % Grid side filter? resistance 1
 Lg_bess = 600e-6;%483e-6;        % Grid side filter? inductance 1e-3
 %kp_v = -1000;   
 %ki_v = -300000;
